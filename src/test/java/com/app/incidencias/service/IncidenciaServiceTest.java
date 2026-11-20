@@ -13,6 +13,7 @@ import com.app.incidencias.repository.IncidenciaRepository;
 import com.app.incidencias.repository.UsuarioRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class IncidenciaServiceTest {
@@ -41,7 +42,7 @@ class IncidenciaServiceTest {
                 Prioridad.ALTA,
                 null
         );
-
+       
         when(incidenciaRepository.findById(1L))
                 .thenReturn(Optional.of(incidencia));
 
@@ -69,7 +70,7 @@ class IncidenciaServiceTest {
         );
 
         incidencia.setEstado(Estado.CERRADA);
-
+         //Cuando el servicio busque la incidencia 1, el repositorio simulado devolverá el objeto que he preparado
         when(incidenciaRepository.findById(1L))
                 .thenReturn(Optional.of(incidencia));
 
@@ -80,7 +81,7 @@ class IncidenciaServiceTest {
         );
 
         assertEquals(Estado.CERRADA, incidencia.getEstado());
-
+        //Compruebo que, al intentar reabrir una incidencia cerrada, se lance la excepción y no se intente guardar ningún cambio
         verify(incidenciaRepository, never()).save(any(Incidencia.class));
     }
 }
