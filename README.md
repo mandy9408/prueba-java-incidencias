@@ -2,6 +2,14 @@
 
 Aplicación web para registrar y consultar incidencias técnicas.
 
+## Funcionalidades
+
+- Consulta de incidencias en una tabla.
+- Filtro por estado sin recargar la página.
+- Formulario para crear incidencias, con asignación opcional de usuario.
+- Mensajes de carga, ausencia de resultados y errores.
+- Cambio de estado mediante la API, impidiendo reabrir incidencias cerradas.
+
 ## Tecnologías
 
 - Java 17
@@ -130,9 +138,6 @@ tienen este formato:
 ## Mejoras pendientes
 
 - Añadir tests de integración de los endpoints y la base de datos.
-
-
-
 - Incorporar paginación si aumenta el volumen de incidencias.
 - Controlar actualizaciones simultáneas para proteger la regla
   de cambio de estado ante peticiones concurrentes.
