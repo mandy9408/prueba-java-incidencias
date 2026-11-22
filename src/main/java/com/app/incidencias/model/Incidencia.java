@@ -39,7 +39,7 @@ public class Incidencia {
     private LocalDateTime fechaCreacion;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     protected Incidencia() {

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.app.incidencias.model.Estado;
 import com.app.incidencias.model.Incidencia;
+//Consulta y guarda datos.
 
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Long> {
 

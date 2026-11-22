@@ -1,0 +1,197 @@
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 48px 20px;
+    font-family: Arial, sans-serif;
+    color: #263244;
+    background-color: #f3f5f9;
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px;
+    background-color: white;
+    border: 1px solid #e5e9f0;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(30, 45, 70, 0.06);
+    overflow-x: auto;
+}
+
+h1 {
+    margin: 0 0 32px;
+    text-align: center;
+    font-size: 28px;
+    letter-spacing: -0.5px;
+}
+
+label {
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+select {
+    padding: 10px 14px;
+    font: inherit;
+    font-size: 14px;
+    color: #263244;
+    background-color: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+select:focus-visible {
+    outline: 3px solid #bfdbfe;
+    outline-offset: 2px;
+    border-color: #2563eb;
+}
+
+select:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+#mensaje {
+    min-height: 20px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #475569;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th,
+td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e9f0;
+}
+
+th {
+    color: #475569;
+    background-color: #f8fafc;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+td {
+    overflow-wrap: anywhere;
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+}
+.boton {
+    display: inline-block;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2563eb;
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background-color: #1d4ed8;
+}
+
+.boton:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.boton:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+form {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    margin: 20px 0 8px;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+form input:focus-visible,
+form textarea:focus-visible {
+    outline: 3px solid #bfdbfe;
+    outline-offset: 2px;
+    border-color: #2563eb;
+}
+
+form small {
+    display: block;
+    margin-top: 8px;
+    color: #475569;
+}
+
+form button {
+    margin-top: 24px;
+}
+
