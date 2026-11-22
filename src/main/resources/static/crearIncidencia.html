@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva incidencia</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="crear.js" defer></script>
+    <script src="crearIncidencia.js" defer></script>
 </head>
 <body>
     <main>
@@ -31,10 +31,6 @@
             <label for="usuarioId">ID del usuario asignado</label>
             <input id="usuarioId" type="number" min="1" step="1"
                    aria-describedby="ayuda-usuario">
-
-            <small id="ayuda-usuario">
-                Opcional. Usuarios de ejemplo: 1 Ana, 2 Luis y 3 Marta.
-            </small>
 
             <button class="boton" id="guardar" type="submit">
                 Crear incidencia

@@ -1,4 +1,3 @@
-
 # Gestión de incidencias
 
 Aplicación web para registrar y consultar incidencias técnicas.
@@ -131,7 +130,9 @@ tienen este formato:
 ## Mejoras pendientes
 
 - Añadir tests de integración de los endpoints y la base de datos.
-- Añadir un formulario de creación, opcional en el enunciado.
+
+
+
 - Incorporar paginación si aumenta el volumen de incidencias.
 - Controlar actualizaciones simultáneas para proteger la regla
   de cambio de estado ante peticiones concurrentes.

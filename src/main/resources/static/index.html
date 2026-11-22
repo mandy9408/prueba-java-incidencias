@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de incidencias</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
-</head>
-<body>
-    <main>
-        <h1>Gestión de incidencias</h1>
-        <a class="boton" href="crear.html">Nueva incidencia</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestión de incidencias</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="app.js" defer></script>
+    </head>
+    <body>
+        <main>
+            <h1>Gestión de incidencias</h1>
+            <div class="acciones">
+                <a class="boton" href="crearIncidencia.html">+ Nueva incidencia</a>
 
-        <label for="estado">Filtrar por estado:</label>
+                <div class="filtro">
+                    <label for="estado">Filtrar por estado:</label>
 
-        <select id="estado">
-            <option value="">Todos</option>
-            <option value="ABIERTA">Abiertas</option>
-            <option value="EN_CURSO">En curso</option>
-            <option value="CERRADA">Cerradas</option>
-        </select>
+                    <select id="estado">
+                        <option value>Todos</option>
+                        <option value="ABIERTA">Abiertas</option>
+                        <option value="EN_CURSO">En curso</option>
+                        <option value="CERRADA">Cerradas</option>
+                    </select>
+                </div>
+            </div>
+            <p id="mensaje" role="status"></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Prioridad</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha de creación</th>
+                        <th scope="col">Usuario asignado</th>
+                    </tr>
+                </thead>
 
-        <p id="mensaje" role="status"></p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Prioridad</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Fecha de creación</th>
-                    <th scope="col">Usuario asignado</th>
-                </tr>
-            </thead>
-
-            <tbody id="incidencias">
-            </tbody>
-        </table>
-    </main>
-</body>
-
-
+                <tbody id="incidencias">
+                </tbody>
+            </table>
+        </main>
+    </body>
 
 </html>
