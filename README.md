@@ -1,6 +1,7 @@
+
 # Gestión de incidencias
 
-Aplicación web para registrar y consultar incidencias técnicas.
+Aplicación web para registrar, consultar y gestionar incidencias técnicas de un equipo de soporte.
 
 ## Funcionalidades
 
@@ -8,7 +9,8 @@ Aplicación web para registrar y consultar incidencias técnicas.
 - Filtro por estado sin recargar la página.
 - Formulario para crear incidencias, con asignación opcional de usuario.
 - Mensajes de carga, ausencia de resultados y errores.
-- Cambio de estado mediante la API, impidiendo reabrir incidencias cerradas.
+- Cambio de estado mediante la API.
+- Restricción que impide reabrir incidencias cerradas.
 
 ## Tecnologías
 
@@ -17,15 +19,16 @@ Aplicación web para registrar y consultar incidencias técnicas.
 - Spring Data JPA
 - H2 en memoria
 - HTML, CSS y JavaScript
+- Maven
 - JUnit 5 y Mockito
 
 ## Requisitos
 
-Tener instalado JDK 17. No es necesario instalar Maven:
-el proyecto incluye Maven Wrapper.
+Tener instalado JDK 17.
 
-La primera ejecución necesita conexión a Internet para descargar
-las dependencias.
+No es necesario instalar Maven, ya que el proyecto incluye Maven Wrapper.
+
+La primera ejecución necesita conexión a Internet para descargar las dependencias.
 
 ## Arrancar la aplicación
 
@@ -41,13 +44,13 @@ En Linux o macOS:
 ./mvnw spring-boot:run
 ```
 
-Abrir http://localhost:8080/
+Abrir en el navegador:
 
-La base de datos se crea y carga con datos de ejemplo mediante
-`src/main/resources/schema.sql`.
+http://localhost:8080/
 
-Los cambios se pierden al detener la aplicación porque H2
-está configurada en memoria.
+La base de datos se crea y carga con datos de ejemplo mediante el archivo `src/main/resources/schema.sql`.
+
+Los datos se pierden al detener la aplicación porque H2 está configurada en memoria.
 
 ## Ejecutar los tests
 
@@ -63,14 +66,14 @@ En Linux o macOS:
 ./mvnw test
 ```
 
-Se incluyen dos tests unitarios del servicio:
+Se incluyen dos tests unitarios de la capa de servicio:
 
-- Cambio de una incidencia abierta a EN_CURSO.
-- Rechazo de la reapertura de una incidencia cerrada.
+- Comprobar que una incidencia abierta puede pasar a estado EN_CURSO.
+- Comprobar que una incidencia cerrada no puede reabrirse.
 
-También se incluye un test de carga del contexto de Spring.
+También se incluye un test que comprueba que el contexto de Spring Boot se carga correctamente.
 
-## API
+## API REST
 
 | Método | Ruta                            | Función              |
 | ------- | ------------------------------- | --------------------- |
@@ -79,7 +82,7 @@ También se incluye un test de carga del contexto de Spring.
 | GET     | /api/incidencias?estado=ABIERTA | Filtrar por estado    |
 | PATCH   | /api/incidencias/{id}/estado    | Cambiar el estado     |
 
-Ejemplo de creación:
+Ejemplo de creación de una incidencia:
 
 ```json
 {
@@ -91,7 +94,8 @@ Ejemplo de creación:
 ```
 
 La descripción y el usuario asignado son opcionales.
-El estado inicial es ABIERTA y la fecha se establece al crearla.
+
+Todas las incidencias se crean inicialmente en estado ABIERTA y la fecha de creación se establece automáticamente.
 
 Ejemplo de cambio de estado:
 
@@ -103,25 +107,26 @@ Ejemplo de cambio de estado:
 
 ## Decisiones técnicas
 
-- **Arquitectura por capas (Controller, Service y Repository):** para separar responsabilidades, facilitar el mantenimiento del código y permitir realizar pruebas unitarias de la lógica de negocio de forma aislada.
-- **Spring Data JPA:** para simplificar el acceso a la base de datos y evitar implementar manualmente las operaciones básicas de persistencia.
-- **H2 en memoria:** para facilitar la ejecución y evaluación de la aplicación sin necesidad de instalar ni configurar una base de datos externa.
-- **Inicialización mediante schema.sql:** para disponer de una estructura de datos y registros de ejemplo reproducibles desde el primer arranque.
-- **Enums para estados y prioridades:** para limitar los valores permitidos y evitar estados inconsistentes.
-- **DTOs de entrada y validaciones:** para controlar los datos recibidos por la API y separar las peticiones HTTP de las entidades de persistencia.
-- **Manejo centralizado de excepciones:** para proporcionar respuestas de error consistentes y evitar duplicar su tratamiento en los controladores.
-- **Lógica de negocio en el servicio:** la regla que impide reabrir incidencias cerradas se centraliza en el servicio para garantizar su cumplimiento independientemente del cliente que utilice la API.
-- **Cambio de estado idempotente:** solicitar el estado CERRADA para una incidencia que ya está cerrada no genera un error, ya que no modifica su situación.
-- **Validación del usuario asignado:** si se proporciona un identificador de usuario inexistente, se devuelve un error 400 para evitar asignaciones inválidas.
-- **Restricciones de datos:** el email del usuario es único y la descripción de la incidencia está limitada a 2000 caracteres para mantener la integridad de los datos.
-- **Frontend con HTML, CSS y JavaScript nativo:** dado el alcance reducido de la aplicación, no se ha considerado necesario incorporar un framework frontend. Se utiliza fetch para consumir la API REST de forma asíncrona.
-- **Frontend servido por Spring Boot:** permite ejecutar toda la aplicación desde un único proyecto, evitando configuraciones adicionales y problemas de CORS.
-- **JUnit 5 y Mockito:** para comprobar las reglas de negocio de forma aislada, simulando el comportamiento de los repositorios sin depender de una base de datos real.
+- **Arquitectura por capas:** he separado el proyecto en Controller, Service y Repository para organizar el código, facilitar su mantenimiento y separar responsabilidades.
+- **Spring Data JPA:** permite consultar y guardar datos sin tener que escribir manualmente todas las consultas SQL.
+- **H2 en memoria:** facilita la ejecución del proyecto sin necesidad de instalar una base de datos externa.
+- **Archivo schema.sql:** contiene la creación de las tablas, sus restricciones y los datos de ejemplo.
+- **Enums:** permiten definir los valores válidos para los estados y las prioridades de las incidencias.
+- **DTOs y validaciones:** permiten controlar qué datos recibe la API y comprobar que sean correctos antes de procesarlos.
+- **Gestión centralizada de excepciones:** permite devolver los errores de la API con un formato común.
+- **Reglas de negocio en el Service:** la lógica que impide reabrir incidencias cerradas se encuentra en la capa de servicio.
+- **Incidencias cerradas:** solicitar nuevamente el estado CERRADA para una incidencia que ya está cerrada está permitido, ya que su estado no cambia.
+- **Usuario asignado:** si se proporciona un identificador de usuario, se comprueba que exista. En caso contrario, se devuelve un error 400.
+- **Restricciones de datos:** el email de los usuarios es único y la descripción de las incidencias tiene una longitud máxima de 2000 caracteres.
+- **Frontend sin frameworks:** he utilizado HTML, CSS y JavaScript, tal como solicita el enunciado. La comunicación con el backend se realiza mediante fetch.
+- **Frontend servido por Spring Boot:** permite ejecutar el frontend y el backend desde un único proyecto.
+- **JUnit 5 y Mockito:** permiten comprobar la lógica de negocio utilizando repositorios simulados, sin depender de una base de datos real en los tests unitarios.
 
-## Errores
+## Gestión de errores
 
-Las respuestas gestionadas por el manejador de excepciones
-tienen este formato:
+Los errores gestionados por la API siguen un formato JSON común.
+
+Por ejemplo:
 
 ```json
 {
@@ -130,23 +135,25 @@ tienen este formato:
 }
 ```
 
-- 400: datos o parámetros inválidos.
-- 404: incidencia inexistente al cambiar su estado.
-- 409: intento de reabrir una incidencia cerrada.
-- 500: error inesperado.
+Códigos HTTP utilizados para los errores:
+
+- 400: datos o parámetros incorrectos.
+- 404: incidencia no encontrada.
 - 405: método HTTP no permitido.
+- 409: intento de reabrir una incidencia cerrada.
+- 500: error interno del servidor.
 
 ## Mejoras pendientes
 
-Con más tiempo, incorporaría las siguientes mejoras:
+Con más tiempo, añadiría las siguientes mejoras:
 
-* Ampliar la cobertura de tests unitarios, incluyendo la creación de incidencias, las validaciones y el filtrado por estado.
-* Añadir tests de integración para comprobar los endpoints REST y la persistencia de datos.
-* Incorporar paginación y ordenación para gestionar un mayor volumen de incidencias.
-* Controlar las actualizaciones simultáneas mediante mecanismos de bloqueo optimista para garantizar el cumplimiento de las reglas de negocio ante peticiones concurrentes.
-* Incorporar una base de datos persistente, como PostgreSQL, para un posible entorno de producción.
-* Añadir autenticación y autorización si la aplicación evolucionase hacia un sistema multiusuario.
-* Incorporar una pipeline de integración continua para automatizar la ejecución de los tests.
+- Crear más tests para comprobar la creación de incidencias, el filtrado y otros casos de error.
+- Añadir pruebas de integración para comprobar el funcionamiento conjunto de la API y la base de datos.
+- Incorporar filtros adicionales por prioridad y usuario asignado.
+- Permitir ordenar las incidencias por fecha de creación.
+- Incorporar paginación para mostrar las incidencias por páginas cuando haya muchos registros.
+- Utilizar una base de datos persistente, como PostgreSQL, para conservar los datos al detener la aplicación.
+- Añadir un sistema de inicio de sesión y permisos de usuario.
 
 ## Uso de IA
 
@@ -154,6 +161,8 @@ He utilizado ChatGPT como herramienta de apoyo durante el desarrollo de la aplic
 
 - Orientar la estructura y organización del proyecto.
 - Generar y explicar partes del código del backend y del frontend.
-- Preparar y revisar los tests y la documentación.
+- Preparar y revisar los tests.
+- Mejorar el diseño del frontend mediante CSS.
+- Revisar la documentación del proyecto.
 
 El código se ha revisado y adaptado a los requisitos de la prueba técnica. El funcionamiento de la aplicación se ha comprobado mediante peticiones manuales a la API, pruebas en el navegador y ejecución de los tests.
