@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.app.incidencias.dto.CambiarEstadoRequest;
 
 @RestController
+//URL base para todas las rutas de este controlador.
 @RequestMapping("/api/incidencias")
 public class IncidenciaController {
 
@@ -41,7 +42,7 @@ public class IncidenciaController {
 
         return incidenciaService.listar(estado);
     }
-
+//Crear incidencia 
     @PostMapping
     public ResponseEntity<Incidencia> crear(
             @Valid @RequestBody CrearIncidenciaRequest request) {

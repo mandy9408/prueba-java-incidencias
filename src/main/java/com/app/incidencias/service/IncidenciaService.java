@@ -30,6 +30,10 @@ public class IncidenciaService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    
+    
+    
+    
     public List<Incidencia> listar(Estado estado) {
         if (estado == null) {
             return incidenciaRepository.findAll();
@@ -37,6 +41,9 @@ public class IncidenciaService {
 
         return incidenciaRepository.findByEstado(estado);
     }
+
+
+
 
     @SuppressWarnings("null")
     @Transactional
@@ -58,6 +65,9 @@ public class IncidenciaService {
 
         return incidenciaRepository.save(incidencia);
     }
+
+
+    
 
     @Transactional
 public Incidencia cambiarEstado(@NonNull Long id, Estado nuevoEstado) {

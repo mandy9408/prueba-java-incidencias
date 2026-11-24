@@ -103,19 +103,20 @@ Ejemplo de cambio de estado:
 
 ## Decisiones técnicas
 
-- Separación en controlador, servicio y repositorios.
-- H2 en memoria para facilitar la ejecución sin instalar una base de datos.
-- Un único script SQL para crear las tablas e insertar los ejemplos.
-- Enums para los estados y las prioridades.
-- DTOs de entrada para definir los datos aceptados y validarlos.
-- Manejo centralizado de excepciones con formato JSON común.
-- La regla que impide reabrir incidencias cerradas está en el servicio.
-- Solicitar CERRADA para una incidencia ya cerrada se permite.
-- Un usuario asignado inexistente se considera un dato inválido y devuelve 400.
-- El email del usuario es único.
-- La descripción tiene un límite de 2000 caracteres.
-- Frontend servido por Spring Boot, con fetch y sin frameworks.
-- Repositorios simulados con Mockito en los tests unitarios.
+- **Arquitectura por capas (Controller, Service y Repository):** para separar responsabilidades, facilitar el mantenimiento del código y permitir realizar pruebas unitarias de la lógica de negocio de forma aislada.
+- **Spring Data JPA:** para simplificar el acceso a la base de datos y evitar implementar manualmente las operaciones básicas de persistencia.
+- **H2 en memoria:** para facilitar la ejecución y evaluación de la aplicación sin necesidad de instalar ni configurar una base de datos externa.
+- **Inicialización mediante schema.sql:** para disponer de una estructura de datos y registros de ejemplo reproducibles desde el primer arranque.
+- **Enums para estados y prioridades:** para limitar los valores permitidos y evitar estados inconsistentes.
+- **DTOs de entrada y validaciones:** para controlar los datos recibidos por la API y separar las peticiones HTTP de las entidades de persistencia.
+- **Manejo centralizado de excepciones:** para proporcionar respuestas de error consistentes y evitar duplicar su tratamiento en los controladores.
+- **Lógica de negocio en el servicio:** la regla que impide reabrir incidencias cerradas se centraliza en el servicio para garantizar su cumplimiento independientemente del cliente que utilice la API.
+- **Cambio de estado idempotente:** solicitar el estado CERRADA para una incidencia que ya está cerrada no genera un error, ya que no modifica su situación.
+- **Validación del usuario asignado:** si se proporciona un identificador de usuario inexistente, se devuelve un error 400 para evitar asignaciones inválidas.
+- **Restricciones de datos:** el email del usuario es único y la descripción de la incidencia está limitada a 2000 caracteres para mantener la integridad de los datos.
+- **Frontend con HTML, CSS y JavaScript nativo:** dado el alcance reducido de la aplicación, no se ha considerado necesario incorporar un framework frontend. Se utiliza fetch para consumir la API REST de forma asíncrona.
+- **Frontend servido por Spring Boot:** permite ejecutar toda la aplicación desde un único proyecto, evitando configuraciones adicionales y problemas de CORS.
+- **JUnit 5 y Mockito:** para comprobar las reglas de negocio de forma aislada, simulando el comportamiento de los repositorios sin depender de una base de datos real.
 
 ## Errores
 
@@ -137,16 +138,22 @@ tienen este formato:
 
 ## Mejoras pendientes
 
-- Añadir tests de integración de los endpoints y la base de datos.
-- Incorporar paginación si aumenta el volumen de incidencias.
-- Controlar actualizaciones simultáneas para proteger la regla
-  de cambio de estado ante peticiones concurrentes.
+Con más tiempo, incorporaría las siguientes mejoras:
+
+* Ampliar la cobertura de tests unitarios, incluyendo la creación de incidencias, las validaciones y el filtrado por estado.
+* Añadir tests de integración para comprobar los endpoints REST y la persistencia de datos.
+* Incorporar paginación y ordenación para gestionar un mayor volumen de incidencias.
+* Controlar las actualizaciones simultáneas mediante mecanismos de bloqueo optimista para garantizar el cumplimiento de las reglas de negocio ante peticiones concurrentes.
+* Incorporar una base de datos persistente, como PostgreSQL, para un posible entorno de producción.
+* Añadir autenticación y autorización si la aplicación evolucionase hacia un sistema multiusuario.
+* Incorporar una pipeline de integración continua para automatizar la ejecución de los tests.
 
 ## Uso de IA
 
-He utilizado ChatGPT como apoyo para preparar la estructura,
-generar y explicar partes del código del backend, frontend y tests,
-redactar documentación y resolver problemas durante el desarrollo.
+He utilizado ChatGPT como herramienta de apoyo durante el desarrollo de la aplicación, principalmente para:
 
-La aplicación se ha comprobado mediante peticiones manuales,
-pruebas en el navegador y ejecución de los tests.
+- Orientar la estructura y organización del proyecto.
+- Generar y explicar partes del código del backend y del frontend.
+- Preparar y revisar los tests y la documentación.
+
+El código se ha revisado y adaptado a los requisitos de la prueba técnica. El funcionamiento de la aplicación se ha comprobado mediante peticiones manuales a la API, pruebas en el navegador y ejecución de los tests.
